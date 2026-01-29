@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TreeGen | Free Online ASCII Folder Structure Generator</title>
+    <meta
+      name="title"
+      content="TreeGen | Free Online ASCII Folder Structure Generator"
+    />
+    <meta
+      name="description"
+      content="Generate clean ASCII tree diagrams from your local folders instantly. Secure, private, and client-side folder structure visualizer for developers."
+    />
+    <meta
+      name="keywords"
+      content="folder tree generator, ASCII tree, directory structure visualizer, file hierarchy tool, treegen, developer tools"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourdomain.com/" />
+    <meta
+      property="og:title"
+      content="TreeGen | Visualize Your Folder Structure in ASCII"
+    />
+    <meta
+      property="og:description"
+      content="Convert local directories into text-based tree diagrams. 100% private, browser-based processing."
+    />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:title"
+      content="TreeGen | Local Folder Visualizer"
+    />
+    <meta
+      property="twitter:description"
+      content="Generate clean ASCII tree diagrams from your local folders instantly and privately."
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="privacy-badge">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+          />
+        </svg>
+        Client-Side Privacy Guaranteed
+      </div>
+      <h1>TreeGen</h1>
+      <p class="subtitle">
+        Turn your folder structure into a clean ASCII diagram. Locally.
+      </p>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <div class="controls">
+          <input
+            type="file"
+            id="folderInput"
+            webkitdirectory
+            directory
+            multiple
+          />
+          <button
+            class="btn btn-primary"
+            onclick="document.getElementById('folderInput').click()"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+              />
+            </svg>
+            Select Folders
+          </button>
+
+          <div class="toggle-container">
+            <input type="checkbox" id="foldersOnly" onchange="processFiles()" />
+            <label for="foldersOnly">Folders only</label>
+          </div>
+
+          <button class="btn btn-secondary" onclick="resetState()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+              />
+            </svg>
+            Clear
+          </button>
+        </div>
+      </section>
+
+      <section class="output-wrapper">
+        <div id="outputActions" style="display: none">
+          <div class="output-header">
+            <span
+              style="
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                opacity: 0.6;
+              "
+              >Structure Preview</span
+            >
+            <button
+              class="btn btn-secondary"
+              style="padding: 0.5rem 1rem; font-size: 0.8rem"
+              onclick="copyToClipboard()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
+                />
+              </svg>
+              Copy Tree
+            </button>
+          </div>
+        </div>
+
+        <div id="treeOutput">
+          <div class="empty-state">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-18 0A2.25 2.25 0 0 0 5.25 15h13.5A2.25 2.25 0 0 0 21 12.75m-18 0V17.25A2.25 2.25 0 0 0 5.25 19.5h13.5A2.25 2.25 0 0 0 21 17.25V12.75m-18 0V12a2.25 2.25 0 0 1 2.25-2.25H15M5.25 15V12m0 3h13.5m0 0V12m-13.5 0h13.5"
+              />
+            </svg>
+            <p>
+              No folder selected. Select a directory to generate its tree
+              diagram.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div
+        id="disclaimer"
+        style="
+          margin-top: 2rem;
+          font-size: 0.8rem;
+          color: var(--text-muted);
+          text-align: center;
+        "
+      >
+        <strong>Zero-Knowledge Disclaimer:</strong> Files are processed entirely
+        within your browser memory. We do not transmit, store, or host any of
+        your data on our servers. Refreshing the page permanently clears all
+        local memory.
+      </div>
+    </main>
+
+    <div id="toast">Copied to clipboard!</div>
+
+    <footer>Designed & Developed by <strong>xodobyte</strong></footer>
+    <script defer src="index.js"></script>
+  </body>
+</html>
