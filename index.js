@@ -3,6 +3,7 @@ const folderInput = document.getElementById("folderInput");
 const treeOutput = document.getElementById("treeOutput");
 const outputActions = document.getElementById("outputActions");
 const foldersOnlyCheckbox = document.getElementById("foldersOnly");
+const showHiddenCheckbox = document.getElementById("showHidden");
 
 folderInput.addEventListener("change", (e) => {
   currentFiles = Array.from(e.target.files);
@@ -13,12 +14,14 @@ function processFiles() {
   if (currentFiles.length === 0) return;
 
   const foldersOnly = foldersOnlyCheckbox.checked;
+  const showHidden = showHiddenCheckbox.checked;
   const tree = {};
 
   currentFiles.forEach((file) => {
     const pathParts = file.webkitRelativePath.split("/");
 
-    if (pathParts.some((part) => part.startsWith("."))) return;
+    if (pathParts.includes("node_modules")) return;
+    if (!showHidden && pathParts.some((part) => part.startsWith("."))) return;
 
     let currentLevel = tree;
     pathParts.forEach((part, index) => {

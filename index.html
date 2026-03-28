@@ -18,7 +18,10 @@
     />
 
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://file-tree-generator-sigma.vercel.app/" />
+    <meta
+      property="og:url"
+      content="https://file-tree-generator-sigma.vercel.app/"
+    />
     <meta
       property="og:title"
       content="TreeGen | Visualize Your Folder Structure in ASCII"
@@ -100,6 +103,11 @@
           <div class="toggle-container">
             <input type="checkbox" id="foldersOnly" onchange="processFiles()" />
             <label for="foldersOnly">Folders only</label>
+          </div>
+
+          <div class="toggle-container">
+            <input type="checkbox" id="showHidden" onchange="processFiles()" />
+            <label for="showHidden">Show hidden files</label>
           </div>
 
           <button class="btn btn-secondary" onclick="resetState()">
