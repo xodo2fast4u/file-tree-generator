@@ -1,4 +1,4 @@
-# TreeGen - File Tree Generator
+# TreeGen | File Tree Generator
 
 Visualize your project structure instantly. Share clean ASCII diagrams. Keep your data private.
 
