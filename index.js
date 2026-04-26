@@ -2,6 +2,7 @@ let currentFiles = [];
 const folderInput = document.getElementById("folderInput");
 const treeOutput = document.getElementById("treeOutput");
 const outputActions = document.getElementById("outputActions");
+const emptyState = document.getElementById("emptyState");
 const foldersOnlyCheckbox = document.getElementById("foldersOnly");
 const showHiddenCheckbox = document.getElementById("showHidden");
 
@@ -26,7 +27,6 @@ function processFiles() {
     let currentLevel = tree;
     pathParts.forEach((part, index) => {
       const isLast = index === pathParts.length - 1;
-      const isFolder = !isLast || file.name === "";
 
       if (foldersOnly && isLast && index !== 0) return;
 
@@ -37,9 +37,12 @@ function processFiles() {
     });
   });
 
-  const treeText = renderTree(tree);
-  treeOutput.textContent = treeText;
-  outputActions.style.display = "block";
+  setTimeout(() => {
+    const treeText = renderTree(tree);
+    treeOutput.textContent = treeText;
+    emptyState.style.display = "none";
+    outputActions.style.display = "block";
+  }, 0);
 }
 
 function renderTree(obj, prefix = "") {
@@ -48,13 +51,12 @@ function renderTree(obj, prefix = "") {
 
   keys.forEach((key, index) => {
     const isLast = index === keys.length - 1;
-    const connector = isLast ? "└── " : "├── ";
-
+    const connector = isLast ? "\u2514\u2500\u2500 " : "\u251C\u2500\u2500 ";
     const label = prefix === "" ? `${key} (Root)` : key;
 
     result += prefix + connector + label + "\n";
 
-    const newPrefix = prefix + (isLast ? "    " : "│   ");
+    const newPrefix = prefix + (isLast ? "    " : "\u2502   ");
     result += renderTree(obj[key], newPrefix);
   });
 
@@ -63,8 +65,20 @@ function renderTree(obj, prefix = "") {
 
 function copyToClipboard() {
   const text = treeOutput.textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(showToast).catch(() => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
   const textarea = document.createElement("textarea");
   textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
   document.body.appendChild(textarea);
   textarea.select();
   try {
@@ -85,12 +99,7 @@ function showToast() {
 function resetState() {
   currentFiles = [];
   folderInput.value = "";
-  treeOutput.innerHTML = `
-                <div class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-18 0A2.25 2.25 0 0 0 5.25 15h13.5A2.25 2.25 0 0 0 21 12.75m-18 0V17.25A2.25 2.25 0 0 0 5.25 19.5h13.5A2.25 2.25 0 0 0 21 17.25V12.75m-18 0V12a2.25 2.25 0 0 1 2.25-2.25H15M5.25 15V12m0 3h13.5m0 0V12m-13.5 0h13.5" />
-                    </svg>
-                    <p>No folder selected. Select a directory to generate its tree diagram.</p>
-                </div>`;
+  treeOutput.textContent = "";
+  emptyState.style.display = "flex";
   outputActions.style.display = "none";
 }
