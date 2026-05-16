@@ -22,6 +22,7 @@ function processFiles() {
     const pathParts = file.webkitRelativePath.split("/");
 
     if (pathParts.includes("node_modules")) return;
+    if (pathParts[pathParts.length - 1] === "package-lock.json") return;
     if (!showHidden && pathParts.some((part) => part.startsWith("."))) return;
 
     let currentLevel = tree;
@@ -66,9 +67,12 @@ function renderTree(obj, prefix = "") {
 function copyToClipboard() {
   const text = treeOutput.textContent;
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(showToast).catch(() => {
-      fallbackCopy(text);
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(showToast)
+      .catch(() => {
+        fallbackCopy(text);
+      });
   } else {
     fallbackCopy(text);
   }
