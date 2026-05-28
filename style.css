@@ -1,20 +1,19 @@
 :root {
-  --primary: oklch(0.65 0.25 264);
+  --primary: oklch(0.6 0.16 264);
   --bg-dark: oklch(0.1 0 264);
   --bg: oklch(0.2 0 264);
   --bg-light: oklch(0.3 0 264);
   --text: oklch(0.96 0 264);
   --text-muted: oklch(0.76 0 264);
 
-  --shadow-s:
-    inset 0 1px 3px #ffffff30, 0 1px 2px #00000030, 0 2px 3px #00000020;
-  --shadow-m:
-    inset 0 1px 2px #ffffff50, 0 2px 4px #00000030, 0 4px 8px #00000015;
-  --shadow-l:
-    inset 0 1px 2px #ffffff70, 0 4px 6px #00000030, 0 6px 10px #00000015;
+  --shadow-s: inset 0 1px 3px #ffffff30, 0 1px 2px #00000030, 0 2px 3px #00000020;
+  --shadow-m: inset 0 1px 2px #ffffff50, 0 2px 4px #00000030, 0 4px 8px #00000015;
+  --shadow-l: inset 0 1px 2px #ffffff70, 0 4px 6px #00000030, 0 6px 10px #00000015;
 
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* https://www.youtube.com/watch?v=iO1HCv0pI20 */
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -31,12 +30,16 @@
   margin: 0;
   padding: 0;
   font-family:
-    "Inter",
+    'Inter',
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    'Segoe UI',
     Roboto,
     sans-serif;
+}
+
+html {
+  overflow-y: scroll; /* Prevent layout shift */
 }
 
 body {
@@ -46,6 +49,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 header {
@@ -54,6 +59,7 @@ header {
   margin: 0 auto;
   width: 100%;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .container {
@@ -71,6 +77,7 @@ header {
   box-shadow: var(--shadow-m);
   border: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 2rem;
+  flex-shrink: 0;
 }
 
 .privacy-badge {
@@ -88,6 +95,7 @@ header {
 .privacy-badge svg {
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
 }
 
 h1 {
@@ -96,6 +104,7 @@ h1 {
   letter-spacing: -0.02em;
   margin-bottom: 0.5rem;
 }
+
 .subtitle {
   color: var(--text-muted);
   margin-bottom: 2rem;
@@ -122,12 +131,14 @@ h1 {
   font-size: 0.95rem;
   text-decoration: none;
   box-shadow: var(--shadow-s);
+  flex-shrink: 0;
 }
 
 .btn-primary {
   background-color: var(--primary);
   color: white;
 }
+
 .btn-primary:hover {
   opacity: 0.9;
   transform: translateY(-1px);
@@ -139,6 +150,7 @@ h1 {
   color: var(--text);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 .btn-secondary:hover {
   background-color: var(--bg);
 }
@@ -151,6 +163,7 @@ h1 {
 .btn svg {
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
 }
 
 .output-wrapper {
@@ -161,8 +174,10 @@ h1 {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.05);
   min-height: 300px;
+  max-height: 70vh;
   display: flex;
   flex-direction: column;
+  contain: layout style paint;
 }
 
 .output-header {
@@ -172,16 +187,40 @@ h1 {
   margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
 }
 
 #treeOutput {
-  font-family: "Fira Code", "Courier New", monospace;
+  font-family: 'Fira Code', 'Courier New', monospace;
   white-space: pre;
   font-size: 0.9rem;
   overflow-x: auto;
+  overflow-y: auto;
   color: var(--text);
   line-height: 1.4;
   flex: 1;
+  contain: strict;
+  will-change: scroll-position;
+  scroll-behavior: auto;
+}
+
+/* Optimize scrollbar */
+#treeOutput::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#treeOutput::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#treeOutput::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+#treeOutput::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .toggle-container {
@@ -190,12 +229,14 @@ h1 {
   gap: 0.5rem;
   font-size: 0.9rem;
   color: var(--text-muted);
+  flex-shrink: 0;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   width: 1.2rem;
   height: 1.2rem;
   accent-color: var(--primary);
+  flex-shrink: 0;
 }
 
 .empty-state {
@@ -217,6 +258,7 @@ input[type="checkbox"] {
   margin-bottom: 1.25rem;
   opacity: 0.4;
   color: var(--primary);
+  flex-shrink: 0;
 }
 
 .empty-state p {
@@ -237,7 +279,9 @@ input[type="checkbox"] {
   font-weight: 600;
   transition: var(--transition);
   z-index: 1000;
+  pointer-events: none;
 }
+
 #toast.show {
   transform: translateX(-50%) translateY(0);
 }
@@ -247,6 +291,7 @@ footer {
   padding: 2rem;
   color: var(--text-muted);
   font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 @media (max-width: 600px) {
