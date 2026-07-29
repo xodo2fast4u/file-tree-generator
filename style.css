@@ -1,5 +1,5 @@
 :root {
-  --primary: oklch(0.6 0.16 264);
+  --primary: oklch(0.32 0.15 20);
   --bg-dark: oklch(0.1 0 264);
   --bg: oklch(0.2 0 264);
   --bg-light: oklch(0.3 0 264);
@@ -12,8 +12,6 @@
 
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* https://www.youtube.com/watch?v=iO1HCv0pI20 */
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -39,7 +37,7 @@
 }
 
 html {
-  overflow-y: scroll; /* Prevent layout shift */
+  overflow-y: scroll;
 }
 
 body {
@@ -204,7 +202,6 @@ h1 {
   scroll-behavior: auto;
 }
 
-/* Optimize scrollbar */
 #treeOutput::-webkit-scrollbar {
   width: 8px;
   height: 8px;
